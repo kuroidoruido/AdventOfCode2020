@@ -33,8 +33,8 @@ fn parse_data(input: String) -> Vec<PasswordLine> {
         // 17-20 x: zsxjrxkgxxxxxxxmxgxf
         .map(|line| {
             let line_without_caret = line.replace('-', " ");
-            let line_without_double_dot = line_without_caret.replace(": ", " ");
-            let split: Vec<&str> = line_without_double_dot.split(' ').collect();
+            let line_without_colons = line_without_caret.replace(": ", " ");
+            let split: Vec<&str> = line_without_colons.split(' ').collect();
             // [17, 20, x, zsxjrxkgxxxxxxxmxgxf]
             let min_str = split
                 .get(0)
