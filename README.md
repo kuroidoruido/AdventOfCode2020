@@ -1,5 +1,8 @@
 # Advent of code 2020
 
+DISCLAIMER: I'm an Rust beginner, so do think solution used are the best way to do in Rust, and if you see some mistakes in my code, don't hesitate to tell me!
+
+
 - :heavy_check_mark: = finished challenge
 - :x: = failed challenge
 - :clock6: = waiting challenge revelation
@@ -9,7 +12,7 @@
 Day | Part 1 | Part 2
 ------- | --------- | ---------
 1 | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" /> | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" />
-2 | :clock6: | :clock6:
+2 | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" /> | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" />
 3 | :clock6: | :clock6:
 4 | :clock6: | :clock6:
 5 | :clock6: | :clock6:
