@@ -61,7 +61,7 @@ fn part2(arr_data: &Vec<Vec<MapPosition>>) {
     println!(
         "Part2: {:?} {:?}",
         encounters,
-        encounters.iter().fold(1, |total, next| total * next)
+        encounters.iter().product::<u64>()
     );
 }
 
