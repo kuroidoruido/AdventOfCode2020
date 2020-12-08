@@ -18,7 +18,7 @@ Day | Part 1 | Part 2
 5 | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" /> | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" />
 6 | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" /> | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" />
 7 | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" /> | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" />
-8 | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" /> | :clock6:
+8 | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" /> | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" />
 9 | :clock6: | :clock6:
 10 | :clock6: | :clock6:
 11 | :clock6: | :clock6:

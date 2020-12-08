@@ -1,6 +1,3 @@
-// use std::collections::HashSet;
-// use std::collections::VecDeque;
-// use std::ops::Range;
 use std::fs::File;
 use std::io::prelude::*;
 
@@ -14,11 +11,11 @@ enum Op {
 
 fn main() -> std::io::Result<()> {
     let input1 = read_input("input1.txt").expect("An error occurred when reading input1.txt");
-    let mut arr_data1 = parse_data(input1).expect("An error occurred when parsing input1.txt");
+    let arr_data1 = parse_data(input1).expect("An error occurred when parsing input1.txt");
 
-    part1(&mut arr_data1);
-    // println!("--------------------------------------------------");
-    // part2(&mut arr_data1);
+    part1(&arr_data1);
+    println!("--------------------------------------------------");
+    part2(&arr_data1);
     Ok(())
 }
 
@@ -75,33 +72,97 @@ fn split_once(str: &str, pattern: &str) -> Option<(String, String)> {
     };
 }
 
-fn part1(arr_data: &mut Vec<Op>) {
+fn part1(arr_data: &Vec<Op>) {
+    let mut arr_data_clone: Vec<Op> = arr_data.clone();
+    let res: ExecuteResult = execute(&mut arr_data_clone);
+    println!("Part1: {:?}", res);
+}
+
+fn part2(arr_data: &Vec<Op>) {
+    let mut op_pointer: i64 = 0;
+    loop {
+        let current_op = arr_data.get(op_pointer as usize);
+        match current_op {
+            Some(Op::NOP(arg, call_time)) => {
+                let mut arr_data_2: Vec<Op> =
+                    fix_op(arr_data, op_pointer, Op::JMP(*arg, *call_time));
+                match execute(&mut arr_data_2) {
+                    ExecuteResult::EndOfProgram(res) => {
+                        println!("Part2: {:?}", res);
+                        return;
+                    }
+                    ExecuteResult::LoopingEnd(_) => {
+                        // println!("Fail to fix program permuting NOP->JMP ({:?})", current_op);
+                        op_pointer += 1;
+                    }
+                }
+            }
+            Some(Op::JMP(arg, call_time)) => {
+                let mut arr_data_2: Vec<Op> =
+                    fix_op(arr_data, op_pointer, Op::NOP(*arg, *call_time));
+                match execute(&mut arr_data_2) {
+                    ExecuteResult::EndOfProgram(res) => {
+                        println!("Part2: {:?}", res);
+                        return;
+                    }
+                    ExecuteResult::LoopingEnd(_) => {
+                        // println!("Fail to fix program permuting JMP->NOP ({:?})", current_op);
+                        op_pointer += 1;
+                    }
+                }
+            }
+            Some(_) => {
+                op_pointer += 1;
+            }
+            None => {
+                println!("Part2: no result found");
+                return;
+            }
+        }
+    }
+}
+
+fn fix_op(arr_data: &Vec<Op>, op_pointer: i64, new_op: Op) -> Vec<Op> {
+    let mut arr_data_clone: Vec<Op> = arr_data.clone();
+    if let Some(op) = arr_data_clone.get_mut(op_pointer as usize) {
+        *op = new_op;
+    }
+    return arr_data_clone;
+}
+
+#[derive(Debug)]
+enum ExecuteResult {
+    EndOfProgram(i64),
+    LoopingEnd(i64),
+}
+
+fn execute(arr_data: &mut Vec<Op>) -> ExecuteResult {
     let mut acc: i64 = 0;
     let mut op_pointer: i64 = 0;
     loop {
         let current_op = arr_data.get_mut(op_pointer as usize);
         if current_op.is_none() {
-            break;
+            return ExecuteResult::EndOfProgram(acc);
         }
         let current_op_unwrap = current_op.unwrap();
         match current_op_unwrap {
             Op::NOP(arg, call_time) => {
                 if *call_time > 0 {
-                    break;
+                    return ExecuteResult::LoopingEnd(acc);
                 }
                 op_pointer += 1;
                 *current_op_unwrap = Op::NOP(*arg, *call_time + 1);
             }
             Op::JMP(arg, call_time) => {
                 if *call_time > 0 {
-                    break;
+                    return ExecuteResult::LoopingEnd(acc);
                 }
                 op_pointer += *arg;
                 *current_op_unwrap = Op::JMP(*arg, *call_time + 1);
             }
             Op::ACC(arg, call_time) => {
                 if *call_time > 0 {
-                    break;
+                    return ExecuteResult::LoopingEnd(acc);
                 }
                 op_pointer += 1;
                 acc += *arg;
@@ -109,7 +170,6 @@ fn part1(arr_data: &mut Vec<Op>) {
             }
         }
     }
-    println!("Part1: {:?}", acc);
 }
 
 #[cfg(test)]
