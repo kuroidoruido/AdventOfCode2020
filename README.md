@@ -22,8 +22,8 @@ Day | Part 1 | Part 2
 9 | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" /> | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" />
 10 | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" /> | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" />
 11 | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" /> | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" />
-12 | :clock6: | :clock6:
-13 | :clock6: | :clock6:
+12 | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" /> | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" />
+13 | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" /> | :heavy_check_mark: <img src="https://www.rust-lang.org/static/images/rust-logo-blk.svg" width="20" />
 14 | :clock6: | :clock6:
 15 | :clock6: | :clock6:
 16 | :clock6: | :clock6:
