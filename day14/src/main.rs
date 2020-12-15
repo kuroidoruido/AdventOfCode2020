@@ -87,17 +87,17 @@ fn part2(data: &Vec<Op>) {
 }
 
 fn execute2(data: &Vec<Op>) -> u128 {
-    let mut base_mask: u128 = 0;
-    let mut masks: Vec<u128> = Vec::new();
+    let mut base_mask: &String = &"".to_string();
     let mut memory: HashMap<u128, u128> = HashMap::new();
 
     for op in data.iter() {
         if let Op::Mask(mask) = op {
-            base_mask = u128::from_str_radix(mask.replace("X", "0").as_str(), 2).unwrap();
-            masks = build_all_masks(mask);
+            base_mask = &mask;
         } else if let Op::Mem(mem_pos, value) = *op {
-            for mask in &masks {
-                memory.insert((mem_pos | base_mask | mask) & mask, value);
+            let masked = apply_mask(mem_pos, base_mask);
+            let unmasked = build_all_masks(&masked);
+            for addr in unmasked {
+                memory.insert(addr, value);
             }
         }
     }
@@ -105,12 +105,32 @@ fn execute2(data: &Vec<Op>) -> u128 {
     return memory.values().sum();
 }
 
+fn apply_mask(address: u128, mask: &String) -> String {
+    let binary_address = format!("{:0>36}", format!("{:b}", address));
+    let binary_array: Vec<String> = binary_address
+        .chars()
+        .zip(mask.chars())
+        .map(|(addr_i, mask_i)| {
+            if mask_i == '1' {
+                return '1';
+            } else if mask_i == 'X' {
+                return 'X';
+            } else {
+                return addr_i;
+            }
+        })
+        .map(|c| format!("{}", c))
+        .collect();
+    let binary_masked_address: String = binary_array.join("");
+    return binary_masked_address;
+}
+
 fn build_all_masks(mask: &String) -> Vec<u128> {
     fn build_all_masks_rec(mask_rec: &String) -> Vec<u128> {
         if mask_rec.contains("X") {
             return vec![
-                build_all_masks_rec(&mask_rec.replacen("X", "1", 1)),
                 build_all_masks_rec(&mask_rec.replacen("X", "0", 1)),
+                build_all_masks_rec(&mask_rec.replacen("X", "1", 1)),
             ]
             .iter()
             .flatten()
@@ -120,7 +140,7 @@ fn build_all_masks(mask: &String) -> Vec<u128> {
             return vec![u128::from_str_radix(mask_rec.as_str(), 2).unwrap()];
         }
     }
-    return build_all_masks_rec(&mask.replace("0", "1"));
+    return build_all_masks_rec(mask);
 }
 
 #[cfg(test)]
@@ -155,14 +175,14 @@ mod tests {
         assert_eq!(
             build_all_masks(&mask),
             vec![
-                u128::from_str_radix("111111111111111111111111111111111111", 2).unwrap(),
-                u128::from_str_radix("111111111111111111111111111111111110", 2).unwrap(),
-                u128::from_str_radix("111111111111111111111111111111111101", 2).unwrap(),
-                u128::from_str_radix("111111111111111111111111111111111100", 2).unwrap(),
-                u128::from_str_radix("111111111111111111111111111111110111", 2).unwrap(),
-                u128::from_str_radix("111111111111111111111111111111110110", 2).unwrap(),
-                u128::from_str_radix("111111111111111111111111111111110101", 2).unwrap(),
-                u128::from_str_radix("111111111111111111111111111111110100", 2).unwrap(),
+                u128::from_str_radix("000000000000000000000000000000000000", 2).unwrap(),
+                u128::from_str_radix("000000000000000000000000000000000001", 2).unwrap(),
+                u128::from_str_radix("000000000000000000000000000000000010", 2).unwrap(),
+                u128::from_str_radix("000000000000000000000000000000000011", 2).unwrap(),
+                u128::from_str_radix("000000000000000000000000000000001000", 2).unwrap(),
+                u128::from_str_radix("000000000000000000000000000000001001", 2).unwrap(),
+                u128::from_str_radix("000000000000000000000000000000001010", 2).unwrap(),
+                u128::from_str_radix("000000000000000000000000000000001011", 2).unwrap(),
             ]
         )
     }
@@ -174,12 +194,21 @@ mod tests {
         assert_eq!(
             build_all_masks(&mask),
             vec![
-                u128::from_str_radix("111111111111111111111111111111111111", 2).unwrap(),
-                u128::from_str_radix("111111111111111111111111111111111110", 2).unwrap(),
-                u128::from_str_radix("111111111111111111111111111111011111", 2).unwrap(),
-                u128::from_str_radix("111111111111111111111111111111011110", 2).unwrap(),
+                u128::from_str_radix("000000000000000000000000000000010010", 2).unwrap(),
+                u128::from_str_radix("000000000000000000000000000000010011", 2).unwrap(),
+                u128::from_str_radix("000000000000000000000000000000110010", 2).unwrap(),
+                u128::from_str_radix("000000000000000000000000000000110011", 2).unwrap(),
             ]
         )
+    }
+
+    #[test]
+    fn it_should_apply_mask_correctly_1() {
+        let mem_pos: u128 = 42;
+        let mask: String = "000000000000000000000000000000X1001X".to_string();
+        let masked: String = apply_mask(mem_pos, &mask);
+        let unmasked_mem_pos = build_all_masks(&masked);
+        assert_eq!(unmasked_mem_pos, [26, 27, 58, 59]);
     }
 
     #[test]
